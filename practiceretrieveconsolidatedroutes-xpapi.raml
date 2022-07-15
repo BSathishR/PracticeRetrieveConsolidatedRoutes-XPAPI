@@ -1,0 +1,72 @@
+#%RAML 1.0
+title: PracticeRetrieveConsolidatedRoutes-XPAPI
+version: v1
+protocols: [HTTP, HTTPS]
+
+uses:
+  common: /libraries/common/common-Business-library.raml
+
+types:
+  getRoutesResponse: !include /libraries/routes/dataTypes/getRoutes-200Responses-dataType.raml  
+  getSchedulesResponse: !include /libraries/schedules/dataTypes/getSchedules-200Response-dataType.raml
+  commonError: !include /libraries/common/dataTypes/common-Error-dataType.raml
+
+/booking:
+  /{transportType}:
+    /routes:
+      get:
+        is:
+          - common.transcationId            
+          - common.companyName
+          - common.departureLocation
+          - common.destinationLocation
+        responses:
+          200:
+            body:
+              application/json:
+                type: getRoutesResponse
+                example: !include /libraries/routes/examples/getRoutes-200Responses.json
+          400:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/400Response.json    
+          404:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/404Response.json
+          500:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/500Response.json
+    /schedules:
+      get:
+        is:
+          - common.transcationId 
+          - common.companyName
+          - common.departureLocation
+          - common.destinationLocation
+          - common.requestTimeZone
+        responses:
+          200:
+            body:
+              application/json:
+                type: getSchedulesResponse
+                example: !include /libraries/schedules/examples/getSchedules-200Response.json
+          400:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/400Response.json  
+          404:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/404Response.json
+          500:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/500Response.json              
